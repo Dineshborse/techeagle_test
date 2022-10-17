@@ -66,7 +66,7 @@ const { ok } = require("assert");
 
 
 
-app.get("/t", (req, res) => {
+app.get("/", (req, res) => {
     // console.log("inside Get")
     res.send(lastMessage);
     console.log(req.body);
