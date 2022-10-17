@@ -10,9 +10,9 @@ app.use(express.json({ limit: "30mb" }))
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
 
 
-app.listen(process.env.PORT || 21000, (err) => {
+app.listen(process.env.PORT || 5000, (err) => {
     if (!err) {
-        console.log("server started on port 21000");
+        console.log("server started on port 5000");
         console.log(`server running on ${process.env.PORT}`)
     }
     else {
@@ -68,7 +68,7 @@ const { ok } = require("assert");
 
 app.get("/", (req, res) => {
     // console.log("inside Get")
-    res.send(lastMessage);
+    res.send("all ok");
     console.log(req.body);
 })
 app.post("/test",(req,res)=>{
