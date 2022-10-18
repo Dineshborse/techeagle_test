@@ -10,9 +10,9 @@ app.use(express.json({ limit: "30mb" }))
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
 
 
-app.listen(process.env.PORT || 80, (err) => {
+app.listen(process.env.PORT || 5000, (err) => {
     if (!err) {
-        console.log("server started on port 80");
+        console.log("server started on port 5000");
         console.log(`server running on ${process.env.PORT}`)
     }
     else {
@@ -64,14 +64,15 @@ const { ok } = require("assert");
 //     client.write('GET');
 // })
 
+let current_monitor_response={};
 
-
-app.get("/", (req, res) => {
+app.get("/monitor", (req, res) => {
     // console.log("inside Get")
-    res.send("all ok");
+    // res.send("all ok");
     console.log(req.body);
+    current_monitor_response = res;
 })
-app.post("/test",(req,res)=>{
+app.post("/data",(req,res)=>{
     console.log(req.body);
-    res.send({status: "ok", message: "recieved data"});
+    res.status(200).send({status: "ok", message: "recieved data"});
 })
