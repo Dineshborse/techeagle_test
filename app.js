@@ -70,9 +70,10 @@ app.get("/monitor", (req, res) => {
     // console.log("inside Get")
     // res.send("all ok");
     console.log(req.body);
-    current_monitor_response = res;
+    res.status(200).send(current_monitor_response);
 })
 app.post("/data",(req,res)=>{
-    console.log(req.body);
+    // console.log(req.body);
+    current_monitor_response=req.body;
     res.status(200).send({status: "ok", message: "recieved data"});
 })
