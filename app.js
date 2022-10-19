@@ -1,8 +1,14 @@
 const express = require("express");
-
+const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
+const userInfo = require("./modals/userModal");
+require("dotenv").config(); 
 var net = require('net');
+// const { ok } = require("assert");
+
+const userController = require("./routes/user");
 
 //for supporting json(body parser middleware)
 app.use(cors());
@@ -10,10 +16,14 @@ app.use(express.json({ limit: "30mb" }))
 app.use(express.urlencoded({ limit: "30mb", extended: true }))
 
 
+mongoose.connect("mongodb+srv://dineshborse:mangalborse@cluster0.umsb4.mongodb.net/TE-drone?retryWrites=true&w=majority").then((data) => {
+    console.log("connected to database")
+}).catch((err) => {
+    console.log(err);
+})
 app.listen(process.env.PORT || 5000, (err) => {
     if (!err) {
         console.log("server started on port 5000");
-        console.log(`server running on ${process.env.PORT}`)
     }
     else {
         console.log(err);
@@ -21,9 +31,6 @@ app.listen(process.env.PORT || 5000, (err) => {
 })
 
 
-
-var net = require('net');
-const { ok } = require("assert");
 
 // var client = new net.Socket();
 // client.connect(5000, '127.0.0.1', function () {
@@ -69,7 +76,7 @@ let current_monitor_response={};
 app.get("/monitor", (req, res) => {
     // console.log("inside Get")
     // res.send("all ok");
-    console.log(req.body);
+    // console.log(req.body);
     res.status(200).send(current_monitor_response);
 })
 app.post("/data",(req,res)=>{
@@ -77,3 +84,5 @@ app.post("/data",(req,res)=>{
     current_monitor_response=req.body;
     res.status(200).send({status: "ok", message: "recieved data"});
 })
+
+app.use("/user",userController);
