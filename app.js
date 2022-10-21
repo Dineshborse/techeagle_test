@@ -100,4 +100,13 @@ app.get("/start-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
     controlCommands.start = "True"
     res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
 })
+app.get("/reset-control-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
+    // console.log("inside Get")
+    // res.send("all ok");
+    // console.log(req.body);
+    controlCommands.rtl = "False"
+    controlCommands.start = "False"
+    res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
+})
+
 app.use("/user",userController);
