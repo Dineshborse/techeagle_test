@@ -72,7 +72,10 @@ app.listen(process.env.PORT || 5000, (err) => {
 // })
 
 let current_monitor_response={};
-const controlCommands={rtl:"False",start:"False"}
+const controlCommands={rtl:"False",start:"False"};
+const servoActuationStatus={status:"ok",servo:"False"};
+const droneConnectionStatus={status:"ok",connectionStatus:"False"};
+
 
 app.get("/monitor", (req, res) => {
     // console.log("inside Get")
@@ -109,4 +112,24 @@ app.get("/reset-control-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
     res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
 })
 
+app.get("/gcs-connect-to-drone-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
+    // console.log("inside Get")
+    // res.send("all ok");
+    // console.log(req.body);
+    droneConnectionStatus.connectionStatus="True";
+    res.status(200).send(droneConnectionStatus);
+})
+app.get("/servo-read-status-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
+    // console.log("inside Get")
+    // res.send("all ok");
+    // console.log(req.body);
+    res.status(200).send(servoActuationStatus);
+})
+app.get("/servo-set-status-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
+    // console.log("inside Get")
+    // res.send("all ok");
+    // console.log(req.body);
+    servoActuationStatus.servo="True"
+    res.status(200).send(servoActuationStatus);
+})
 app.use("/user",userController);
