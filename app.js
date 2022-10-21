@@ -72,6 +72,7 @@ app.listen(process.env.PORT || 5000, (err) => {
 // })
 
 let current_monitor_response={};
+const controlCommands={rtl:"False",start:"False"}
 
 app.get("/monitor", (req, res) => {
     // console.log("inside Get")
@@ -82,7 +83,21 @@ app.get("/monitor", (req, res) => {
 app.post("/data",(req,res)=>{
     // console.log(req.body);
     current_monitor_response=req.body;
-    res.status(200).send({status: "ok", message: "recieved data"});
+    res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
+})
+app.get("/rtl-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
+    // console.log("inside Get")
+    // res.send("all ok");
+    // console.log(req.body);
+    controlCommands.rtl = "True"
+    res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
 })
 
+app.get("/start-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
+    // console.log("inside Get")
+    // res.send("all ok");
+    // console.log(req.body);
+    controlCommands.start = "True"
+    res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
+})
 app.use("/user",userController);
