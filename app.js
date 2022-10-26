@@ -72,7 +72,7 @@ app.listen(process.env.PORT || 5000, (err) => {
 // })
 
 let current_monitor_response={};
-const controlCommands={rtl:"False",start:"False"};
+const controlCommands={rtl:"False",start:"False",locations:"",isLocationSet:"False"};
 const servoActuationStatus={status:"ok",servo:"False"};
 const droneConnectionStatus={status:"ok",connectionStatus:"False"};
 
@@ -109,6 +109,15 @@ app.get("/reset-control-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
     // console.log(req.body);
     controlCommands.rtl = "False"
     controlCommands.start = "False"
+    controlCommands.locations=""
+    controlCommands.isLocationSet="False"
+    res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
+})
+
+app.get("/set-start-end-locations-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
+
+    controlCommands.locations=req.body.loactions
+    controlCommands.isLocationSet="True"
     res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
 })
 
