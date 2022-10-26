@@ -91,6 +91,7 @@ app.post("/data", (req, res) => {
         controlCommands.start = "False"
         controlCommands.locations = ""
         controlCommands.isLocationSet = "False"
+        console.log(controlCommands);
     }
     res.status(200).send({ status: "ok", message: "recieved data", ...controlCommands });
 })
