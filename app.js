@@ -4,7 +4,7 @@ const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const userInfo = require("./modals/userModal");
-require("dotenv").config(); 
+require("dotenv").config();
 var net = require('net');
 // const { ok } = require("assert");
 
@@ -52,8 +52,8 @@ app.listen(process.env.PORT || 5000, (err) => {
 //     // client.write('GET');
 //     flag = true;
 //     console.log('Received: ' + data);
-    
-    
+
+
 //     var jsondata = JSON.parse(data);
 //     let temp = jsondata.long;
 //     jsondata.long=jsondata.lat;
@@ -71,10 +71,10 @@ app.listen(process.env.PORT || 5000, (err) => {
 //     client.write('GET');
 // })
 
-let current_monitor_response={};
-const controlCommands={rtl:"False",start:"False",locations:"",isLocationSet:"False"};
-const servoActuationStatus={status:"ok",servo:"False"};
-const droneConnectionStatus={status:"ok",connectionStatus:"False"};
+let current_monitor_response = {};
+const controlCommands = { rtl: "False", start: "False", locations: "", isLocationSet: "False" };
+const servoActuationStatus = { status: "ok", servo: "False" };
+const droneConnectionStatus = { status: "ok", connectionStatus: "False" };
 
 
 app.get("/monitor", (req, res) => {
@@ -83,17 +83,23 @@ app.get("/monitor", (req, res) => {
     // console.log(req.body);
     res.status(200).send(current_monitor_response);
 })
-app.post("/data",(req,res)=>{
+app.post("/data", (req, res) => {
     // console.log(req.body);
-    current_monitor_response=req.body;
-    res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
+    current_monitor_response = req.body;
+    if (req.body.reset === "True") {
+        controlCommands.rtl = "False"
+        controlCommands.start = "False"
+        controlCommands.locations = ""
+        controlCommands.isLocationSet = "False"
+    }
+    res.status(200).send({ status: "ok", message: "recieved data", ...controlCommands });
 })
 app.get("/rtl-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
     // console.log("inside Get")
     // res.send("all ok");
     // console.log(req.body);
     controlCommands.rtl = "True"
-    res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
+    res.status(200).send({ status: "ok", message: "recieved data", ...controlCommands });
 })
 
 app.get("/start-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
@@ -101,7 +107,7 @@ app.get("/start-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
     // res.send("all ok");
     // console.log(req.body);
     controlCommands.start = "True"
-    res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
+    res.status(200).send({ status: "ok", message: "recieved data", ...controlCommands });
 })
 app.get("/reset-control-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
     // console.log("inside Get")
@@ -109,27 +115,27 @@ app.get("/reset-control-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
     // console.log(req.body);
     controlCommands.rtl = "False"
     controlCommands.start = "False"
-    controlCommands.locations=""
-    controlCommands.isLocationSet="False"
-    res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
+    controlCommands.locations = ""
+    controlCommands.isLocationSet = "False"
+    res.status(200).send({ status: "ok", message: "recieved data", ...controlCommands });
 })
 
 app.post("/set-start-end-locations-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
     console.log(req.body.locations)
-    if(req.body.locations!==""){
-        controlCommands.locations=req.body.locations
-        controlCommands.isLocationSet="True"
+    if (req.body.locations !== "") {
+        controlCommands.locations = req.body.locations
+        controlCommands.isLocationSet = "True"
     }
 
-    
-    res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
+
+    res.status(200).send({ status: "ok", message: "recieved data", ...controlCommands });
 })
 
 app.get("/gcs-connect-to-drone-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
     // console.log("inside Get")
     // res.send("all ok");
     // console.log(req.body);
-    droneConnectionStatus.connectionStatus="True";
+    droneConnectionStatus.connectionStatus = "True";
     res.status(200).send(droneConnectionStatus);
 })
 app.get("/servo-read-status-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
@@ -142,7 +148,7 @@ app.get("/servo-set-status-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
     // console.log("inside Get")
     // res.send("all ok");
     // console.log(req.body);
-    servoActuationStatus.servo="True"
+    servoActuationStatus.servo = "True"
     res.status(200).send(servoActuationStatus);
 })
-app.use("/user",userController);
+app.use("/user", userController);
