@@ -115,9 +115,13 @@ app.get("/reset-control-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
 })
 
 app.get("/set-start-end-locations-ec645b6577c7135ab7ebe510ed45f0690b", (req, res) => {
+    console.log(req.body.locations)
+    if(req.body.locations!==""){
+        controlCommands.locations=req.body.locations
+        controlCommands.isLocationSet="True"
+    }
 
-    controlCommands.locations=req.body.loactions
-    controlCommands.isLocationSet="True"
+    
     res.status(200).send({status: "ok", message: "recieved data",...controlCommands});
 })
 
